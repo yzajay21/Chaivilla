@@ -1,14 +1,40 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
 
-{% block container %}
-	
-{% for s in menu %}
+{% load staticfiles %}
 
-	{{ s.category }}
-	{{ s.types }}
-    {{ s.name }}
-    {{ s.price }}
-
-{% endfor %}
-
-{% endblock %}
+	<section id="menus" class="menus sections">
+		<div class="container">
+			<div class="row">
+				<div class="main_menus">
+					<div class="head_title text-center wow slideInDown" data-wow-duration="2s">
+						<h2>Menu</h2>
+						<div class="separetor"></div>
+					</div>
+					
+					<div class="menus_top_menu text-center wow slideInDown" data-wow-duration="1.5s">
+					</div>
+					
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="single_menus wow slideInLeft" data-wow-duration="1.5s">
+						
+							<ul>	
+							{% for item in items %}
+								
+								{{ item.name }}	
+								{{ item.price }}							
+							
+							{% endfor %}
+							</ul>
+						
+						</div>
+					</div>
+					
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="single_menus wow slideInRight" data-wow-duration="1.5s">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</section>
