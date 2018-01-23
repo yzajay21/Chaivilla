@@ -11,16 +11,17 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import datetime
+from Chaivilla.settings.aws import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm-o8^m18&i2v(5brf)p%=m&$0cdo+9*!qa$uqmztfixd(z5ev$'
+SECRET_KEY = os.environ.get('SECRET_KEY','m-o8^m18&i2v(5brf)p%=m&$0cdo+9*!qa$uqmztfixd(z555ev$')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,6 +29,17 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER='ajaymundhe21@gmail.com'
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_PASSWORD')
+EMAIL_PORT=587
+EMAIL_USE_TLS='TRUE'
+DEFAULT_FROM_EMAIL='Ajay <ajaymundhe21@gmail.com>'
+ADMINS= (
+    ('Ajay','ajaymundhe21@gmail.com'),
+)
+MANAGERS= ADMINS
+'''https://accounts.google.com/DisplayUnlockCaptcha'''
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +52,7 @@ INSTALLED_APPS = [
     'menu',
     'home',
     'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -77,13 +90,16 @@ WSGI_APPLICATION = 'Chaivilla.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+   }
 }
 
-
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+#DATABASES['default']['CONN_MAX_AGE'] = 500
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -120,15 +136,41 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
+#STATICFILES_DIRS = [
     
-    os.path.join(BASE_DIR, 'static'),]
-CORS_REPLACE_HTTPS_REFERER      = False
-HOST_SCHEME                     = "http://"
-SECURE_PROXY_SSL_HEADER         = None
-SECURE_SSL_REDIRECT             = False
-SESSION_COOKIE_SECURE           = False
-CSRF_COOKIE_SECURE              = False
-SECURE_HSTS_SECONDS             = None
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
-SECURE_FRAME_DENY               = False
+    #os.path.join(BASE_DIR, 'static'),]
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT =  os.path.join((BASE_DIR),"mediafiles" )
+
+#AWS_ACCESS_KEY_ID = "AKIAI53L6XTJUFFYHL2A"
+#AWS_SECRET_ACCESS_KEY = "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"
+#AWS_STORAGE_BUCKET_NAME = 'chaivilla-static'
+#AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#AWS_S3_OBJECT_PARAMETERS = {
+ #   'CacheControl': 'max-age=86400',
+#}
+#AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+#MEDIA_URL ='https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#DEFAULT_FILE_STORAGE='MotionPictures.storage_backends.MediaStore'
+#DEFAULT_FILE_STORAGE = '.settings.aws.utils.MediaRootS3BotoStorage'
+
+
+CORS_REPLACE_HTTPS_REFERER      = True
+HOST_SCHEME                     = "https://"
+SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT             = True
+SESSION_COOKIE_SECURE           = True
+CSRF_COOKIE_SECURE              = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+SECURE_HSTS_SECONDS             = 1000000
+SECURE_FRAME_DENY               = True

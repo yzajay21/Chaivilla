@@ -19,23 +19,17 @@ from menu.views import Menu_view
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
 
-from menu.views import MainCourse
-from menu.views import Beverage_view
-from menu.views import Desserts_view
-from menu.views import sandwitch_view
+
 from home.views import Homepageview
 from menu.views import item
 #from home.views import BeverageView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',Homepageview.as_view()),
-    url(r'^menu/',Menu_view,name='Menu_view'),
-    url(r'^sandwitch/',sandwitch_view,name="sandwitch_view"),
-    url(r'^Desserts/',Desserts_view,name="Desserts_view"),
-    url(r'^Beverage/',Beverage_view,name='Beverage_view'),        
-    url(r'^MainCourse',MainCourse,name='MainCourse'),
-    #url(r'^item/(?P<menu_id>[0-9]+)',item,name='item'),
-   url(r'^item/(?P<menu_id>[\w-]+)/$',item,name='item'),
-  #  url(r'beverages',BeverageView,name='BeverageView'),
+    
+    url(r'^$',Menu_view,name='Menu_view'),
+    
+    url(r'^item/(?P<menu_id>[0-9]+)',item,name='item'),
+    url(r'^menu/item/(?P<menu_id>[\w-]+)/$',item,name='item'),
+
 ]
